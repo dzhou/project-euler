@@ -282,3 +282,7 @@ def gen_combinations(items, n):
 phi = (1 + 5**0.5) / 2
 def get_fibn(n):
     return int(round((phi**n - (1-phi)**n) / 5**0.5))
+
+
+def get_digit_root(n):
+    return sum([int(x) for x in str(n)])
