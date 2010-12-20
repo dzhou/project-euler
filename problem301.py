@@ -9,8 +9,8 @@ single heap. - The first player unable to move (because no stones
 remain) loses. 
 
 If (n1,n2,n3) indicates a Nim position consisting of heaps of size n1, 
-n2 and n3 then there is a simple function X(n1,n2,n3) — that you may 
-look up or attempt to deduce for yourself — that returns: 
+n2 and n3 then there is a simple function X(n1,n2,n3) that you may 
+look up or attempt to deduce for yourself  that returns: 
 
 zero if, with perfect strategy, the player about to move will eventually 
 lose; or non-zero if, with perfect strategy, the player about to move 
@@ -22,7 +22,7 @@ current player loses. To illustrate: - current player moves to (1,2,1)
 - opponent moves to (1,0,1) - current player moves to (0,0,1) - opponent 
 moves to (0,0,0), and so wins. 
 
-For how many positive integers n??230 does X(n,2n,3n) = 0 ? 
+For how many positive integers n<2^30 does X(n,2n,3n) = 0 ? 
 """
 
 def problem301():
