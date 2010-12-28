@@ -20,7 +20,7 @@ Why Python for Project Euler:
 1. Built-in big integer 
 2. Arbitrary precision decimal 
 3. Interpreted and dynamic, fast for prototype
-4 ..
+
 
 ProjectEuler requires you to solve the problem in order to see the forum 
 (and other people's solutions). This does makes a lot of sense but it 
@@ -30,9 +30,10 @@ topics (across multiple branches of mathematics and computer science),
 it's realistic to say that very few people have the knowledge to solve 
 all the problems. When someone is stuck on a problem for days and is 
 making no progress, I think it's better for them to look at (and 
-study/learn) someone else's solution rather than give up completely. 
+study/learn from) someone else's solution rather than give up completely. 
 
-I recommend taking a look at the common functions first. For example, 
-having efficient primality test or integer factorization will get you 
-half way on many PE problems. 
+For anyone getting started in Project Euler, I recommend taking a look 
+at the common functions first. For example, having efficient primality 
+test or integer factorization will get you half way on many PE problems. 
+
 

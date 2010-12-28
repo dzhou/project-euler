@@ -9,29 +9,15 @@ import time
 import mathlib as mlib
 
 
-def problem60():
-
-    prime_map = mlib.prime_sieve(2*10**6)
-    prime_list = mlib.prime_sieve(10**4, [])
-    #print prime_list
-    prime_list = [str(p) for p in prime_list]
-    for i in range(1, len(prime_list)):
-        if int(prime_list[1] + prime_list[i]) in prime_map:
-            if int(prime_list[i] + prime_list[1]) in prime_map:
-                print prime_list[i]
-
 def problem61():
-
     def generate_triangle(n): return n*(n+1)/2
     def generate_square(n): return n**2
     def generate_pentagonal(n): return n*(3*n-1)/2
     def generate_hexagonal(n): return n*(2*n-1)
     def generate_heptagonal(n): return n*(5*n-3)/2
-    def generate_octal(n): return n * (3*n-2)
-    
+    def generate_octal(n): return n * (3*n-2)    
     octals = [generate_octal(n) for n in range(1, 4000)]
     octals = [str(n) for n in octals if n > 10**3 and n < 10**4]
-
     print octals
 
 def problem76():

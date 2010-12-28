@@ -7,6 +7,7 @@ import time
 import itertools
 
 import mathlib as mlib
+from mathlib import *
 
 
 def problem41():
@@ -27,6 +28,9 @@ def problem41():
 
 
 def problem42():
+    """ Using words.txt (right click and 'Save Link/Target As...'), a 16K 
+    text file containing nearly two-thousand common English words, how many 
+    are triangle words? """ 
     def get_ascii_value(word):
         return sum([(ord(c)-64) for c in word])
 
@@ -49,6 +53,17 @@ def problem42():
     return count
 
 def problem43():
+    """ The number, 1406357289, is a 0 to 9 pandigital number because it is 
+    made up of each of the digits 0 to 9 in some order, but it also has a 
+    rather interesting sub-string divisibility property. 
+
+    Let d1 be the 1st digit, d2 be the 2nd digit, and so on. In this way, we 
+    note the following: 
+
+    d2d3d4=406 is divisible by 2 d3d4d5=063 is divisible by 3 d4d5d6=635 is 
+    divisible by 5 d5d6d7=357 is divisible by 7 d6d7d8=572 is divisible by 
+    11 d7d8d9=728 is divisible by 13 d8d9d10=289 is divisible by 17 Find the 
+    sum of all 0 to 9 pandigital numbers with this property. """ 
     def calculate(nums, divisor, level):
         new_nums = []
         for n in nums:
@@ -210,204 +225,6 @@ def problem49():
                     return str(n)+str(n+step)+str(n+2*step)
 
 
-def problem51():
-    """
-    By replacing the 1^(st) digit of *57, it turns out that six of the 
-    possible values: 157, 257, 457, 557, 757, and 857, are all prime.
-
-    By replacing the 3^(rd) and 4^(th) digits of 56**3 with the same 
-    digit, this 5-digit number is the first example having seven primes, 
-    yielding the family: 56003, 56113, 56333, 56443, 56663, 56773, and 
-    56993. Consequently 56003, being the first member of this family, 
-    is the smallest prime with this property.
-
-    Find the smallest prime which, by replacing part of the number 
-    (not necessarily adjacent digits) with the same digit, is part 
-    of an eight prime value family.
-    """
-    pass
-
-
-def problem58():
-    prime_map = mlib.prime_sieve(2*10**6)
-    side_len = 3
-    num_prime = 0.0
-    num = 0
-
-    while side_len < 20000:
-        c = side_len**2
-        corners = [n for n in range(c, c - side_len*3, -side_len+1)]
-        num += len(corners)
-        for p in corners:
-            if p in prime_map:
-                num_prime += 1
-       
-        if num_prime / num < 0.1:
-            return side_len
-
-        side_len += 2
-
-
-def problem54():
-    def cmp_cards(a,b):
-        c =  {'A':14, 'K':13, 'Q':12, 'J':11, 'T':10}
-        a0 = a[0]
-        b0 = b[0]
-        if a[0] in c:
-            a0 = c[a[0]]
-        if b[0] in c:
-            b[0] = c[b[0]]
-        return cmp(a[0],b[0])
-
-    def same_suites(cards):
-        s = cards[0][1]
-        for card in cards:
-            if card[1] != s:
-                return False
-        return True
-        
-
-
-    s = "5H 5C 6S 7S KD     2C KS AS QD TD"
-    cards = s.split()
-
-    c1 = []
-    c2 = []
-    for i in range(0,5):
-        c1.append(cards[i])
-    for i in range(5,10):
-        c2.append(cards[i])    
-    #c1.sort(cmp_cards)
-    #c2.sort(cmp_cards)
-    print c1,c2        
-
-
-def problem50():
-    """ 
-
-    """
-    max_prime = 1000000
-    max_sum = 1000000
-    vals = range(0, max_prime)
-    vals[1] = 0
-
-    for i in range(2, int(math.sqrt(max_prime))):
-        if not mlib.is_prime(i):
-            continue
-        k = i*2
-        while k < len(vals):
-            vals[k] = 0
-            k += i
-
-    # cache prime map
-    prime_map = {}
-    prime_list = []
-    for p in vals:
-        if p != 0:
-            prime_map[p] = True
-            prime_list.append(p)
-
-    # start search
-    max_len = 0
-    
-    line_sum = sum(prime_list)
-    """
-    print "total=", line_sum, "len=", len(prime_list)
-    for max_sum_index in range(len(prime_list)-1, 0, -1):
-        if line_sum > 1000000:
-            line_sum -= prime_list[max_sum_index]
-        else:
-            break
-
-    print "start", line_sum, "len=", max_sum_index
-    """
-    """
-    for i in range(0, max_sum_index):
-        if line_sum > 1000000:
-            line_sum -= prime_list[i]
-            continue
-        sub_line_sum = line_sum
-        for j in range(max_sum_index-1, i, -1):
-            if j-i < max_len:
-                break
-            if sub_line_sum in prime_map:
-                if j-i > max_len:
-                    max_len = j-i
-                    print "max", max_len
-            sub_line_sum -= prime_list[j]
-        line_sum -= prime_list[i]
-    """
-
-    
-    def find_max_len(p_list, p_map, max):
-        line_sum = sum(p_list)
-        for i in range(0, len(p_list)):
-            for j in range(len(p_list)-1, i, -1):
-                if j-i < max:
-                    continue
-                if line_sum in p_map:
-                    max = j-i
-                    continue
-                line_sum -= p_list[j]
-
-        return max
-
-    
-    line_sum = sum(prime_list)
-    for k in range(len(prime_list)-1, 0, -1):
-        if line_sum > 1000000:
-            line_sum -= prime_list[k]
-        else:
-            break
-
-    #start = 0
-    j = 0
-    #while True:
-        #max_len = find_max_len(prime_list[:k], prime_map, max_len)
-        #line_sum = line_sum - prime_list[j] + prime_list[k]
-        #while line_sum > 1000000:
-            #line_sum -= 1
-
-
-            
-def problem46():
-    """ 
-    It was proposed by Christian Goldbach that every odd composite 
-    number can be written as the sum of a prime and twice a square.
-
-    It turns out that the conjecture was false.
-
-    What is the smallest odd composite that cannot be written as 
-    the sum of a prime and twice a square?
-    """
-    prime_map = prime_sieve(1000000, output={})
-    sq_map = {}
-
-    for i in range(0, 10000):
-        sq_map[i] = i**2
-        
-    n = 3
-    while True:
-        n += 2
-        if n in prime_map:
-            continue
-            
-        m = 1
-        is_goldbach = False
-
-        while 2*m < n:
-            if (n-sq_map[m]*2) in prime_map:
-                is_goldbach = True
-            m += 1
-
-        if not is_goldbach:
-            return n
-
-
-
-
-        
-
 def problem50():
     """ 
     The prime 41, can be written as the sum of six consecutive primes:
@@ -446,11 +263,33 @@ def problem50():
     return max_p 
         
 
+def problem51():
+    """
+    By replacing the 1^(st) digit of *57, it turns out that six of the 
+    possible values: 157, 257, 457, 557, 757, and 857, are all prime.
+
+    By replacing the 3^(rd) and 4^(th) digits of 56**3 with the same 
+    digit, this 5-digit number is the first example having seven primes, 
+    yielding the family: 56003, 56113, 56333, 56443, 56663, 56773, and 
+    56993. Consequently 56003, being the first member of this family, 
+    is the smallest prime with this property.
+
+    Find the smallest prime which, by replacing part of the number 
+    (not necessarily adjacent digits) with the same digit, is part 
+    of an eight prime value family.
+    """
+    pass 
+
+    
 def problem52():
+    """ It can be seen that the number, 125874, and its double, 251748, 
+    contain exactly the same digits, but in a different order. 
+
+    Find the smallest positive integer, x, such that 2x, 3x, 4x, 5x, and 6x, 
+    contain the same digits. """ 
     i = 1
     while True:
         i += 1
-
         # optimize: jump to valid portion
         if len(str(i)) != len(str(i*6)):
             i = 10**len(str(i))
@@ -471,9 +310,9 @@ def problem52():
             return i
 
 
-def problem53():
-
-    
+def problem53():    
+    """How many, not necessarily distinct, values of nCr, for 1 n 100, are 
+    greater than one-million? """ 
     cutoff = 10**6
     fac_map = {}
     count = 0
@@ -488,21 +327,23 @@ def problem53():
 
     return count
 
+    
+def problem54():
+    """ The file, poker.txt, contains one-thousand random hands dealt to two 
+    players. Each line of the file contains ten cards (separated by a single 
+    space): the first five are Player 1's cards and the last five are Player 
+    2's cards. You can assume that all hands are valid (no invalid 
+    characters or repeated cards), each player's hand is in no specific 
+    order, and in each hand there is a clear winner. 
 
-def problem56():
-    max_sum = 0
-    for a in range(2, 100):
-        c = a
-        for b in range(2, 100):
-            c *= a
-            s = sum([int(x) for x in str(c)])
-            if s > max_sum:
-                max_sum = s
-
-    return max_sum
-
-
+    How many hands does Player 1 win? """     
+    pass 
+    
+    
 def problem55():
+    """ A number that never forms a palindrome through the reverse and add 
+    process is called a Lychrel number. How many Lychrel numbers are there 
+    below ten-thousand? """ 
     count = 0
     i = 0
     while i < 10**4:
@@ -519,7 +360,21 @@ def problem55():
     
     return count
 
+def problem56():
+    """ Considering natural numbers of the form, ab, where a, b 100, what is 
+    the maximum digital sum? """ 
+    max_sum = 0
+    for a in range(2, 100):
+        c = a
+        for b in range(2, 100):
+            c *= a
+            s = sum([int(x) for x in str(c)])
+            if s > max_sum:
+                max_sum = s
 
+    return max_sum
+    
+    
 def problem57():
     """ 
     3/2     1
@@ -533,6 +388,8 @@ def problem57():
     generalize:
     D_i = N_i-1 + D_i-1
     N_i = N_i-1 + D_i-1*2
+    In the first one-thousand expansions, how many fractions contain a 
+    numerator with more digits than denominator?     
     """
     n_i = 3
     d_i = 2
@@ -546,29 +403,39 @@ def problem57():
     return count
 
 
+def problem58():
+    """ Starting with 1 and spiralling anticlockwise in the following way, a 
+    square spiral with side length 7 is formed. If one complete new layer is 
+    wrapped around the spiral above, a square spiral with side length 9 will 
+    be formed. If this process is continued, what is the side length of the 
+    square spiral for which the ratio of primes along both diagonals first 
+    falls below 10%? """ 
+    prime_map = mlib.prime_sieve(2*10**6)
+    side_len = 3
+    num_prime = 0.0
+    num = 0
 
-def problem47():
-    max = 10**6
-    pmap = [0 for i in range(max)]
-    
-    for i in range(2, int(math.sqrt(max))):
-        if not mlib.is_prime(i):
-            continue
+    while side_len < 20000:
+        c = side_len**2
+        corners = [n for n in range(c, c - side_len*3, -side_len+1)]
+        num += len(corners)
+        for p in corners:
+            if p in prime_map:
+                num_prime += 1
+       
+        if num_prime / num < 0.1:
+            return side_len
 
-        k = i
-        while k < len(pmap):
-            pmap[k] += 1
-            k += i
-
-    for i in range(10, len(pmap), 4):
-        if pmap[i] == 4:
-            if pmap[i+1] == 4 and pmap[i+2] == 4 and pmap[i+3] == 4:
-                return i
-            if pmap[i-1] == 4 and pmap[i-2] == 4 and pmap[i-3] == 4:
-                return i-3
-
+        side_len += 2
+        
 
 def problem59():
+    """ Your task has been made easy, as the encryption key consists of 
+    three lower case characters. Using cipher1.txt (right click and 'Save 
+    Link/Target As...'), a file containing the encrypted ASCII codes, and 
+    the knowledge that the plain text must contain common English words, 
+    decrypt the message and find the sum of the ASCII values in the original 
+    text. """ 
     fin = open('files/p59_ciphers')
     lines = fin.readlines()
     
@@ -589,3 +456,18 @@ def problem59():
             value = sum([ord(c) for c in plain_text[:-2]])
             return value
 
+
+def problem60():
+     """ Find the lowest sum for a set of five primes for which any two 
+    primes concatenate to produce another prime. """ 
+    """
+    prime_map = mlib.prime_sieve(2*10**6)
+    prime_list = mlib.prime_sieve(10**4, [])
+    #print prime_list
+    prime_list = [str(p) for p in prime_list]
+    for i in range(1, len(prime_list)):
+        if int(prime_list[1] + prime_list[i]) in prime_map:
+            if int(prime_list[i] + prime_list[1]) in prime_map:
+                print prime_list[i]
+    """
+    pass 

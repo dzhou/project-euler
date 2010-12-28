@@ -3,7 +3,6 @@ import random
 import math
 
 
-
 def miller_rabin_pass(a, s, d, n):
     a_to_power = pow(a, d, n)
     if a_to_power == 1:
