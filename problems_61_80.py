@@ -5,6 +5,8 @@ import sys
 import os
 import math
 import time
+import itertools 
+from decimal import Decimal 
 
 import mathlib as mlib
 
@@ -36,30 +38,6 @@ def problem76():
         print i, sum_map[i]
 
 
-def problem187():
-    # sloan's A066265
-    return 17427258
-
-
-def problem121():
-    def calculate_level(turn, n):
-        total = 0
-        gen = mlib.gen_combinations(range(1,turn), n)
-        try:
-            while True:
-                total += reduce(lambda x, y: x*y, gen.next())
-        except StopIteration:
-            pass
-
-        return total
-
-    turns = 15
-    wins = 1
-    for i in range(1, (turns-1)/2+1):
-        wins += calculate_level(turns+1, i)
-    
-    return mlib.factorial(turns+1) / wins
-
 def problem75():
 
     triple_map = {}
@@ -79,90 +57,6 @@ def problem75():
             n += 1
 
 
-def problem124():
-    """
-    def gen_multipliers(numbers, factors, max):
-        multipliers = []
-        i = 1
-        while True:
-            m = factors[0]**i
-            if m > max:
-                break
-            multipliers.append(m)
-            i += 1
-
-        return multipliers 
-
-    max = 10**5
-    for n in range(2, 10):
-        ms = gen_multipliers([], [n], max)
-        print len(ms)
-    """
-    rad_map = {}
-    for i in range(1, 10**5):
-        rad_map[i] = i
-
-    prime_list = mlib.prime_sieve(10**5, [])
-    for p in prime_list:
-        r = p*p
-        while r*p < len(rad_map):
-            rad_map[r*p] /= r
-            r *= p
-
-    for i in range(1, 100):
-        print i, rad_map[i]
-    return 0
-
-
-def problem91():
-    points = []
-    for x in range(0, 51):
-        for y in range(0, 51):
-            points.append((x,y))
-   
-    for p1 in points:
-        for p2 in points:
-            pass
-
-
-def problem69():
-    #def totient(n):
-    #    return sum([1 for i in range(1,n) if mlib.gcd(i,n)==1])
-    """
-    max = 10**6
-    prime_map = mlib.prime_sieve(max+1) 
-    prime_list = prime_map.keys()
-    prime_list.sort()
-    totient_map = {}
-
-    for p in prime_map:
-        totient_map[p] = p-1
-        base = p*p
-        while base < max+1:
-            totient_map[base] = totient_map[base/p] * p
-            base *= p
-
-    for n in range(2, max+1):
-        if n not in totient_map:
-            reduced = mlib.get_any_factor(n, prime_list)
-            totient_map[n] = totient_map[reduced] * totient_map[n/reduced]
- 
-    print totient_map[10]
-    print totient_map[100]
-    return sum(totient_map.values())
-    """
-    pass
-
-def problem205():
-    peter_dice = {}
-    for i in range(0, 9):
-        pass
-
-    def gen_dice_roll(num_face, num_roll):
-        dices = [1 for i in range(num_face)]
-        
-        while True:
-            dices = None
         
 
 
@@ -223,18 +117,6 @@ def problem62():
         cube_map[cube] = list(str(cube))
         n += 1
 
-
-
-
-
-
-def problem213():
-    pass
-    import random
-
-    grid = [[0 for i in range(0,30)] for j in range(0,30)]
-
-
         
 
 def problem67():
@@ -252,8 +134,32 @@ def problem67():
 
     return grid[0][0]
 
+def problem68():
+    """
+    Using the numbers 1 to 10, and depending on arrangements, it is possible 
+    to form 16- and 17-digit strings. What is the maximum 16-digit string 
+    for a "magic" 5-gon ring? 
+    """
+    max_str = ""
+    for digits in itertools.permutations(range(1,11)):
+        a,b,c,d,e,f,g,h,i,j = digits
+        s = a+f+g 
+        if (b+g+h == s and 
+            i+h+c == s and 
+            i+j+d == s and 
+            f+j+e == s):
+            gon = [(a,f,g),(b,g,h),(c,h,i),(d,i,j),(e,j,f)]
+            min_digit = min(a,b,c,d,e)
+            offset = [y for y in range(len(gon)) 
+                if gon[y][0] == min_digit][0]
+            ngon = gon[offset:] + gon[:offset]
+            mstring = "".join([str(x1) for y1 in ngon for x1 in y1])
+            if mstring > max_str:
+                max_str = mstring 
 
-
+    return max_str
+    
+    
 def problem79():
     f = open('files/p79_keylogs', 'rb')
     data = f.readlines()
@@ -301,58 +207,6 @@ def problem79():
     return ''.join(key)
     
         
-
-def problem100():
-    blue = 15
-    red = 6
-    max = 10**10
-    res = []
-    while True:
-        total = blue + red
-        u = total*(total-1)
-        l = blue**2-blue
-        
-        if u % l == 0 and u/l == 2:
-            print blue, red, blue+red
-            res.append((blue, red))
-            if len(res) == 4:
-                break
-
-        if u / l < 2:
-            red += 1
-        else:
-            blue += 1
-
-    for i in range(1, len(res)):
-        b1, r1 = res[i]
-        b2, r2 = res[i-1]
-        print float(b1+r1) / (b2+r2)
-
-    s = 803761
-    m = 5.82840961820
-    p = 1
-    while True:
-        n = s * m**p
-        if n > 10**12:
-            print s, m, p, n, int(n)
-            break
-        p += 1
-
-    s = 1070379110495
-    for i in range(0, 10**8):
-        np = s + i
-        nn = s - i
-
-        bp = np * (np-1)
-        bn = nn * (nn-1)
-
-        h1 = int(math.sqrt(bp/2))
-        h2 = int(math.sqrt(bn/2))
-        
-        if h1 * (h1+1) * 2 == bp:
-            print "total:", np
-            print "blue:", h1+1
-            return h1+1
     
 def problem72():
     def totient(n):
@@ -370,10 +224,7 @@ def problem72():
 
 
 def problem74():
-    
-
     factorial_map = {}
-    
     for n in range(10, 100):
         next_value = sum(mlib.factorial(int(c)) for c in str(n))     
         print next_value
@@ -382,120 +233,7 @@ def problem74():
 
 
 
-def problem148():
-    
-    def print_pascal(n, debug=True):
-        row = [1]
-        count = 0
-        for i in range(0, n):
-            if debug:
-                print i+1, row
-            for i in row:
-                if i % 7 == 0:
-                    count += 1
-            r = [1]
-            for i in range(0, len(row)-1):
-                r.append((row[i]+row[i+1])%7)
-            r.append(1)
-            row = r
-        return count
 
-    """
-    end_row = 100
-    print 'correct', print_pascal(end_row)
-
-    sum = 0
-    for i in range(7, end_row-(end_row%7), 7):
-        print i, "+", (i/7-1)*21
-        sum += (i / 7) * 21
-        pass
-
-    for i in range(end_row-(end_row%7), end_row):
-        print i,'+',(i/7)*(6-i%7)
-        sum += (i/7)*(6-i%7)
-    
-    print sum
-    #sum = (end_row+1)*end_row/2 - sum
-    return sum
-    """
-    
-    prime_map = prime_sieve(10*10**6, output={})
-    print len(prime_map)
-    
-    max_n = int(math.sqrt(150*10**6)) + 27
-    #max_n = 150 * 10**6
-    max_n = 100
-    #for n in range(10, max_n):
-    n = 2
-    while n < max_n:
-        n += 2
-        n2 = n**2
-        if (isprime(n2+1) and isprime(n2+3) and isprime(n2+7) and
-            isprime(n2+9) and isprime(n2+13) and isprime(n2+27)):
-            print n
-        if n % 1000==0:
-            print n    
-
-
-def problem99():
-    """ 
-    Using base_exp.txt (right click and 'Save Link/Target As...'), a 
-    22K text file containing one thousand lines with a base/exponent 
-    pair on each line, determine which line number has the greatest numerical value.    
-    """
-    def cmp_exp(a,b):
-        return cmp(math.log(a[0],10)*a[1], math.log(b[0],10)*b[1])
-
-    f = open('files/p99_base_exp', 'rb')
-    data = f.readlines()
-    f.close()
-
-    # exp=[base, exponent, line_number]
-    exps = []
-    for i in range(0,len(data)):
-        (n1,n2) = data[i].strip().split(',')
-        exps.append((int(n1),int(n2),i+1))
-
-    exps.sort(cmp_exp)
-    return exps[-1][2]
-
-
-
-def problem160():
-    
-    trail = {}
-    
-    c = 1
-    for i in range(1, (10**4)):
-        #if i % 1000 == 0:
-            #print i
-        if i%100000 != 0:
-            c *= (i%100000)
-        while c % 10 == 0:
-            c /= 10
-        c = c%100000
-    
-    print str(c)[-10:]
-
-    k = 1
-    for i in range(1, 100):
-        k *= i
-    print k
-
-    #for i in range(1000000, 1000150):
-        #print i%100000
-        #n = i
-        #while n%10 == 0:
-            #n /= 10
-        #print n
-    #for i in range(0, 10**10):
-    #i = 1
-    #max = 10**10
-    ##while i < max:
-        #if i % 10**6 == 0:
-            #print i
-        #i += 1
-        #pass
 
 def problem63():
     """ 
@@ -518,67 +256,8 @@ def problem63():
     return count
     
 
-def problem97():
-    """
-    28433x2^(7830457)+1
-    """
-    
-    i = 2
-    c = 2
-    two_map = {1:1}
-    while i <= 7830457:
-        c = c ** 2
-        c %= 10**10
-        two_map[i] = c
-        i = i * 2
-    
-    power = int2bin(7830457, count=32)
-    end_sum = 1
-    for n in range(0, len(power)):
-        print power[n], 2**(len(power)-n-1)
-        if int(power[n]) == 1:
-            end_sum *= two_map[2**(len(power)-n-1)]
-            #print "ADD", end_sum
-
-    return str(end_sum * 28433 + 1)[-10:]
     
 
-    
-
-def problem92():
-    
-    def run_chain(n, cmap):
-        if n in cmap:
-            return cmap[n]
-        else:
-            m = n
-            dsum = 0
-            while n > 0:
-                dsum += (n % 10)**2
-                n /= 10            
-            cmap[m] = run_chain(dsum, cmap)
-            return cmap[m]
-    
-    count = 0
-    chain_map = {1:0, 89:1}
-    for i in range(1, 100):
-        count += run_chain(i, chain_map)
-    
-    # generate up to 9**2*6
-    for i in range(100, 600):
-        run_chain(i, chain_map)
-
-    for n in xrange(1, 10**5):
-        dsum = 0
-        while n > 0:
-            dsum += (n % 10)**2
-            n /= 10 
-            
-        for x in range(0, 10):
-            for y in range(0, 10):
-                count += chain_map[dsum+x**2+y**2]
-
-    return count
 
 
 def problem71():
@@ -615,64 +294,8 @@ def problem73():
 
     return len(frac_map)
    
-def problem173():
-
-    def get_max_edge(start_edge, max_tiles):
-        tiles = (start_edge - 1) * 4
-        edge = start_edge
-        while tiles < max_tiles:
-            edge += 1
-            tiles += (edge - 1) * 4
-
-        return edge
-
-    
-    hole_edge = 1
-    total = 0
-    while True:
-        start_edge = hole_edge + 2
-        max_edge = get_max_edge(start_edge, 100)
-        sq_num = (max_edge - start_edge) / 2 + 1
-        print start_edge, max_edge, sq_num
-        if sq_num <= 0:
-            break
-        else:
-            total += sq_num
-            hole_edge += 1
-
-    return total
 
 
-def problem206():
-    #p = 1020304050607080900
-    max_p = 1929394959697989990
-    min_p = 1020304050607080900
-
-    max_n = int(math.sqrt(max_p))/100
-    min_n = int(math.sqrt(min_p))/100
-
-    i = min_n
-    while i < max_n:
-        n1 = i * 100 + 30
-        n2 = i * 100 + 70
-        k1 = str(n1**2)
-        k2 = str(n2**2)
-    
-        if k1[2] == '2' and k1[4] == '3' and k1[6] == '4' and k1[8] == '5':
-            if k1[10] == '6' and k1[12] == '7' and k1[14] == '8' and k1[16] == '9':
-                return n1
-        if k2[2] == '2' and k2[4] == '3' and k2[6] == '4' and k2[8] == '5':
-            if k2[10] == '6' and k2[12] == '7' and k2[14] == '8' and k2[16] == '9':
-                return n2
-        
-        i += 1
-
-
-def problem145():
-    pass
-    i = 0
-    while i < 10**9:
-        i += 1
 
 
 def problem81():
@@ -696,44 +319,7 @@ def problem81():
     return matrix[-1][-1]
 
 
-def problem97():
-    #28433x2^(7830457)
-    m = 2**1000
-    x = 2**457 * 28433
-    
-    for i in xrange(0, 7830):
-        x *= m
-        x %= 10**10 
 
-    return x+1
-
-
-"""
-def problem62():
-    # permutation inclde leading zero
-    # fuck up results
-    cube_map = {}
-    for i in range(0, 10**5):
-        cube_map[i**3] = 1
-
-    max = (10**5)**3
-    i = 1
-    while i < 10**3:
-        print i,i**3
-        i += 1
-        g = mlib.gen_permutation(str(i**3))
-        count = 0
-        try:
-            while True:
-                if int(g.next()) in cube_map:
-                    #print "IN"
-                    count += 1
-        except:
-            pass
-
-        if count > 5:
-            return i
-"""
 
 def problem66():
     sq_map = {}
@@ -759,74 +345,25 @@ def problem66():
     return max_x
 
 
-def problem104():
-    fib_n1 = 1
-    fib_n2 = 1
-    div = 10**9
-    n = 1
-    #m = 1
-    #a1 = 1
-    #a2 = 1
-    phi = (1 + math.sqrt(5)) / 2
-    r5 = math.sqrt(5)
-    #fib_map = {1:(1,0), 2:(0,1)}    
-    #for i in range(1, 99):
-        #fib_map[i+2] = (fib_map[i][0]+fib_map[i+1][0], fib_map[i][1]+fib_map[i+1][1])
-            
-    m = {}
-    p = phi
-    m[0] = p
-    #for i in range(1, 20*10**6):
-    for i in range(1, 4000):
-        #m[i] = int(m[i-1]*phi * (div*10) % div)
-        if i == 2748:
-            print m[i]
-        if mlib.is_pandigital(m[i]):
-            print i
-        
-    print "DONE"
-    while True:
-        n += 1
-        f = (fib_n1 + fib_n2) % div        
-        if n % 10000 == 0:
-            print n
-           
-        if mlib.is_pandigital(str(f)[-9:]):
-            if mlib.is_pandigital(m[n+1]):
-                return n+1
-            #print n+1
-            #print phi, n+1
-            #print #math.log(phi**(n+1)/r5, 10)
-            #if mlib.is_pandigital(s):
-                #print s, n+1
-                #return n+1
-
-        fib_n1 = fib_n2
-        fib_n2 = f
-
-
-    """    
-    return
-    m = {}
-    last_p = 0
-    while n < 10**9:
-        n += 1
-        f = (fib_n1 + fib_n2) % div
-        
-        if mlib.is_pandigital(str(f)[-9:]):
-            m = n+1
-            a1 = 1
-            a2 = 1
-            while m > (len(fib_map)-2):
-                m -= (len(fib_map)-2)
-                a1_t = a1
-                a1 = fib_map[99999][0]*a1 + fib_map[99999][1]*a2
-                a2 = fib_map[100000][0]*a1_t + fib_map[100000][1]*a2
-
-            a = fib_map[m][0]*a1 + fib_map[m][1]*a2
-            print n+1, str(a)[-9:]
-            if mlib.is_pandigital(str(a)[:9]):
-                return len(str(a)), a[:9]
-        fib_n1 = fib_n2
-        fib_n2 = f
+def problem80():
     """
+    It is well known that if the square root of a natural number is not an 
+    integer, then it is irrational. The decimal expansion of such square 
+    roots is infinite without any repeating pattern at all. 
+
+    The square root of two is 1.41421356237309504880..., and the digital sum 
+    of the first one hundred decimal digits is 475. 
+
+    For the first one hundred natural numbers, find the total of the digital 
+    sums of the first one hundred decimal digits for all the irrational 
+    square roots. 
+    """
+    getcontext().prec = 200 
+    digit_sum = 0
+    for i in range(1, 100):
+        s = str(Decimal(str(i)).sqrt())
+        if s.find('.') >= 0:
+            digits = str(s)[:101]
+            digit_sum += sum([int(d) for d in digits if d != '.'])
+    return digit_sum
+        

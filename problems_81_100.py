@@ -4,6 +4,7 @@ import math
 import itertools 
 
 import mathlib as mlib
+from mathlib import *
 
 def problem85():
     """
@@ -49,78 +50,6 @@ def problem86():
     pass
 
 
-
-def problem54():
-
-    def same_suits(hand):
-        return (hand[0][1] == hand[1][1] == 
-                hand[2][1] == hand[3][1] == hand[4][1])
-
-    def card2num(hand):
-        for i in range(0, 5):
-            if hand[i][0] == 'T':
-                hand[i] = 10
-            elif hand[i][0] == 'J':
-                hand[i] == 11
-            elif hand[i][0] == 'Q':
-                hand[i] == 12
-            elif hand[i][0] == 'K':
-                hand[i] == 13
-            elif hand[i][0] == 'A':
-                hand[i] == 1
-            else:
-                hand[i] = int(hand[i][0])
-        return hand
-
-    player1 = []
-    player2 = []
-
-    fin = open('files/p54_poker')
-    data = fin.readlines()
-    for line in data:
-        hand1 = line[:15].split()
-        hand2 = line[15:].split()
-
-        hand1.append(same_suits(hand1))
-        hand2.append(same_suits(hand2))
-        
-        print card2num(hand1)
-
-        
-        
-    """ Each of the six faces on a cube has a different digit (0 to 9) 
-    written on it; the same is done to a second cube. By placing the two 
-    cubes side-by-side in different positions we can form a variety of 
-    2-digit numbers. 
-
-    For example, the square number 64 could be formed: 
-
-    In fact, by carefully choosing the digits on both cubes it is possible 
-    to display all of the square numbers below one-hundred: 01, 04, 09, 16, 
-    25, 36, 49, 64, and 81. 
-
-    For example, one way this can be achieved is by placing {0, 5, 6, 7, 8, 
-    9} on one cube and {1, 2, 3, 4, 8, 9} on the other cube. 
-
-    However, for this problem we shall allow the 6 or 9 to be turned 
-    upside-down so that an arrangement like {0, 5, 6, 7, 8, 9} and {1, 2, 3, 
-    4, 6, 7} allows for all nine square numbers to be displayed; otherwise 
-    it would be impossible to obtain 09. 
-
-    In determining a distinct arrangement we are interested in the digits on 
-    each cube, not the order. 
-
-    {1, 2, 3, 4, 5, 6} is equivalent to {3, 6, 4, 1, 2, 5} {1, 2, 3, 4, 5, 
-    6} is distinct from {1, 2, 3, 4, 5, 9} 
-
-    But because we are allowing 6 and 9 to be reversed, the two distinct 
-    sets in the last example both represent the extended set {1, 2, 3, 4, 5, 
-    6, 9} for the purpose of forming 2-digit numbers. 
-
-    How many distinct arrangements of the two cubes allow for all of the 
-    square numbers to be displayed? """ 
-
-
 def problem90():
     rules = [(0,1), (0,4), (0,9),
         (1,6), (2,5), (3,6), (4,9),
@@ -144,3 +73,126 @@ def problem90():
                 count += 1
     return count / 2
 
+
+def problem92():
+    
+    def run_chain(n, cmap):
+        if n in cmap:
+            return cmap[n]
+        else:
+            m = n
+            dsum = 0
+            while n > 0:
+                dsum += (n % 10)**2
+                n /= 10            
+            cmap[m] = run_chain(dsum, cmap)
+            return cmap[m]
+    
+    count = 0
+    chain_map = {1:0, 89:1}
+    for i in range(1, 100):
+        count += run_chain(i, chain_map)
+    
+    # generate up to 9**2*6
+    for i in range(100, 600):
+        run_chain(i, chain_map)
+
+    for n in xrange(1, 10**5):
+        dsum = 0
+        while n > 0:
+            dsum += (n % 10)**2
+            n /= 10 
+            
+        for x in range(0, 10):
+            for y in range(0, 10):
+                count += chain_map[dsum+x**2+y**2]
+
+    return count    
+    
+
+def problem97():
+    #28433x2^(7830457)
+    m = 2**1000
+    x = 2**457 * 28433
+    
+    for i in xrange(0, 7830):
+        x *= m
+        x %= 10**10 
+
+    return x+1
+
+
+def problem99():
+    """ 
+    Using base_exp.txt (right click and 'Save Link/Target As...'), a 
+    22K text file containing one thousand lines with a base/exponent 
+    pair on each line, determine which line number has the greatest numerical value.    
+    """
+    def cmp_exp(a,b):
+        return cmp(math.log(a[0],10)*a[1], math.log(b[0],10)*b[1])
+
+    f = open('files/p99_base_exp', 'rb')
+    data = f.readlines()
+    f.close()
+
+    # exp=[base, exponent, line_number]
+    exps = []
+    for i in range(0,len(data)):
+        (n1,n2) = data[i].strip().split(',')
+        exps.append((int(n1),int(n2),i+1))
+
+    exps.sort(cmp_exp)
+    return exps[-1][2]
+
+
+def problem100():
+    blue = 15
+    red = 6
+    max = 10**10
+    res = []
+    while True:
+        total = blue + red
+        u = total*(total-1)
+        l = blue**2-blue
+        
+        if u % l == 0 and u/l == 2:
+            print blue, red, blue+red
+            res.append((blue, red))
+            if len(res) == 4:
+                break
+
+        if u / l < 2:
+            red += 1
+        else:
+            blue += 1
+
+    for i in range(1, len(res)):
+        b1, r1 = res[i]
+        b2, r2 = res[i-1]
+        print float(b1+r1) / (b2+r2)
+
+    s = 803761
+    m = 5.82840961820
+    p = 1
+    while True:
+        n = s * m**p
+        if n > 10**12:
+            print s, m, p, n, int(n)
+            break
+        p += 1
+
+    s = 1070379110495
+    for i in range(0, 10**8):
+        np = s + i
+        nn = s - i
+
+        bp = np * (np-1)
+        bn = nn * (nn-1)
+
+        h1 = int(math.sqrt(bp/2))
+        h2 = int(math.sqrt(bn/2))
+        
+        if h1 * (h1+1) * 2 == bp:
+            print "total:", np
+            print "blue:", h1+1
+            return h1+1    
