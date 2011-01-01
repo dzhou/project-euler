@@ -57,3 +57,7 @@ def problem265():
 
     s_n = sum([int(s, base=2) for s in seq_map])
     return s_n 
+    
+    
+if __name__=="__main__":
+    print problem265()

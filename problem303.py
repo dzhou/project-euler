@@ -40,3 +40,7 @@ def problem303():
         s += res[i]
         
     return s + 1111333355557778 + 1 
+
+    
+if __name__ == "__main__":
+    print problem303()

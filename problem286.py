@@ -42,3 +42,7 @@ def problem286():
             break 
 
     return mid 
+
+    
+if __name__=="__main__":
+    print problem286()

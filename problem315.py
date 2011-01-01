@@ -85,3 +85,5 @@ def problem315():
     return cost 
 
 
+if __name__=="__main__":
+    print problem315()

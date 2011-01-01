@@ -34,3 +34,7 @@ def problem307():
     
     s = reduce(operator.add, res)
     return Decimal(1) - Decimal(s) / Decimal((10**6)**20000)
+
+    
+if __name__ == "__main__":
+    print problem307()

@@ -46,3 +46,7 @@ def C(n, mod):
 
 def problem312():
     return C(C(C(10**4, 28960854), 28960854), 13**8)
+
+    
+if __name__ == "__main__":
+    print problem312()

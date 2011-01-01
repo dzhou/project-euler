@@ -34,3 +34,5 @@ def problem304():
     return fibsum % m 
 
 
+if __name__ == "__main__":
+    print problem304()

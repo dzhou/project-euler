@@ -38,7 +38,9 @@ def problem297():
             f_n_1 = last_fib(k)
             fsrs[k] = zeckendorf(f_n_1) + zeckendorf(k - f_n_1) + k - f_n_1
         return fsrs[k]
-
-
     
     return zeckendorf(10**17-1)
+
+    
+if __name__=="__main__":
+    print problem297()
