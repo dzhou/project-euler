@@ -8,7 +8,7 @@ import itertools
 
 import mathlib as mlib
 from mathlib import *
-
+from number_theory import *
 
 def problem41():
     # must have < 9 digits, 9-pandigit is div by 9
@@ -278,7 +278,15 @@ def problem51():
     (not necessarily adjacent digits) with the same digit, is part 
     of an eight prime value family.
     """
-    pass 
+    def replace_n(n, c):
+        return sum([miller_rabin(int(str(n).replace(c, str(x)))) for x in range(1,10)])
+
+    primes = [x for x in prime_sieve(10**6, output=[]) if x > 10000]
+    for p in primes:
+        for x in range(1, 10):
+            if str(p).find(str(x)) >= 0 and replace_n(p, str(x)) > 7:
+                return p
+    return None
 
     
 def problem52():
