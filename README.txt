@@ -1,7 +1,7 @@
 @author Kefei Dan Zhou 
 @date 11/10/2010 
 Linkedin: http://www.linkedin.com/in/kefeizhou
-Web: http://zhouk.com
+Web: http://kefeizhou.com
 
 
 "Project Euler exists to encourage, challenge, and develop the skills 
@@ -12,6 +12,8 @@ mathematics."
 
 
 My purposes for publishing my solutions on github are:
+(and I'll only publish each solution after more than 100 people have 
+solved the problem)
 1. Share my solutions with people who have trouble with any of 
     these PE problems. 
 2. Demonstrate the power of python!
@@ -19,7 +21,7 @@ My purposes for publishing my solutions on github are:
 Why Python for Project Euler:
 1. Built-in big integer 
 2. Arbitrary precision decimal 
-3. Interpreted and dynamic, fast for prototype
+3. Interpreted and dynamic, fast for prototyping
 
 
 ProjectEuler requires you to solve the problem in order to see the forum 
